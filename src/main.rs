@@ -1,18 +1,20 @@
 //! Example of using the HTTP provider to get the latest block number.
 
 use alloy_consensus::{
-    ReceiptWithBloom, SidecarBuilder, TxEip1559, TxEip2930, TxEip4844,
-    TxEip4844Variant, TxEip4844WithSidecar, TxLegacy,
+    ReceiptWithBloom, SidecarBuilder, TxEip1559, TxEip2930, TxEip4844, TxEip4844Variant,
+    TxEip4844WithSidecar, TxLegacy,
 };
 use alloy_network::Ethereum;
 use alloy_node_bindings::Anvil;
-use alloy_primitives::{Address, Bloom, Bytes, Log, Signature, TxHash, B256, U128, U256, U64};
+use alloy_primitives::{
+    Address, Bloom, Bytes, FixedBytes, Log, Signature, TxHash, Uint, B256, U128, U256, U64, U8,
+};
 use alloy_provider::{HttpProvider, Provider};
 use alloy_rlp::{Decodable, Encodable};
 use alloy_rpc_client::RpcClient;
 use alloy_rpc_types::{
-    request::TransactionRequest, AccessList, BlobTransactionSidecar,
-    Signature as RpcSignature, Transaction as RpcTransaction, TransactionInput,
+    request::TransactionRequest, AccessList, BlobTransactionSidecar, Signature as RpcSignature,
+    Transaction as RpcTransaction, TransactionInput,
 };
 use alloy_signer_wallet::LocalWallet;
 use eyre::Result;
@@ -66,8 +68,23 @@ async fn send_blob_txns() -> Result<()> {
     builder.ingest(b"dummy blob");
     // build the sidecar with default KZG settings after all ingestion is finished
     let sidecar = builder.build()?;
-    let right_sidecar =
-        BlobTransactionSidecar::new(sidecar.blobs, sidecar.commitments, sidecar.proofs);
+    let fixed_bytes_vec_blob: Vec<FixedBytes<131072>> = vec![
+        FixedBytes([0u8; 131072]), // One FixedBytes element filled with zeros
+        FixedBytes([7u8; 131072]), // Another element filled with the byte 7
+    ];
+    let fixed_bytes_vec_commitments: Vec<FixedBytes<48>> = vec![
+        FixedBytes([0u8; 48]), // One FixedBytes element filled with zeros
+        FixedBytes([7u8; 48]), // Another element filled with the byte 7
+    ];
+    let fixed_bytes_vec_proofs: Vec<FixedBytes<48>> = vec![
+        FixedBytes([0u8; 48]), // One FixedBytes element filled with zeros
+        FixedBytes([7u8; 48]), // Another element filled with the byte 7
+    ];
+    let right_sidecar = BlobTransactionSidecar {
+        blobs: fixed_bytes_vec_blob,
+        commitments: fixed_bytes_vec_commitments,
+        proofs: fixed_bytes_vec_proofs,
+    };
     // Create a transaction to transfer 1 wei from Alice to Bob.
     // let data = BlobReader::readBlobCall::new(()).abi_encode();
     // let current_dir = std::env::current_dir()?;
@@ -103,9 +120,13 @@ async fn send_blob_txns() -> Result<()> {
     //         .collect(),
     // };
     let input_data = Bytes::from("some_input_data");
+    // let transaction_type = Some(U8::new(3));
+    let mut transaction_type: U8 = "3".parse().unwrap();
+
     let tx: TransactionRequest = TransactionRequest {
         to: Some(bob),
         input: TransactionInput::new(input_data),
+        transaction_type: Some(transaction_type),
         sidecar: Some(right_sidecar),
         blob_versioned_hashes: Default::default(),
         max_fee_per_blob_gas: Default::default(),

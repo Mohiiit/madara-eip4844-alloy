@@ -51,7 +51,18 @@ name = "alloy-consensus"
 version = "0.1.0"
 source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b661f54df0ac213f18639"
 dependencies = [
- "alloy-eips",
+ "alloy-eips 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
+ "alloy-primitives",
+ "alloy-rlp",
+ "sha2",
+]
+
+[[package]]
+name = "alloy-consensus"
+version = "0.1.0"
+source = "git+https://github.com/alloy-rs/alloy#8f05300c3d5fb0b27e2a4a9ae74f4adf81beedd8"
+dependencies = [
+ "alloy-eips 0.1.0 (git+https://github.com/alloy-rs/alloy)",
  "alloy-primitives",
  "alloy-rlp",
  "c-kzg",
@@ -83,11 +94,24 @@ source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b
 dependencies = [
  "alloy-primitives",
  "alloy-rlp",
- "alloy-serde",
+ "alloy-serde 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "c-kzg",
  "derive_more",
  "once_cell",
  "serde",
+]
+
+[[package]]
+name = "alloy-eips"
+version = "0.1.0"
+source = "git+https://github.com/alloy-rs/alloy#8f05300c3d5fb0b27e2a4a9ae74f4adf81beedd8"
+dependencies = [
+ "alloy-primitives",
+ "alloy-rlp",
+ "alloy-serde 0.1.0 (git+https://github.com/alloy-rs/alloy)",
+ "c-kzg",
+ "derive_more",
+ "once_cell",
 ]
 
 [[package]]
@@ -96,7 +120,7 @@ version = "0.1.0"
 source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b661f54df0ac213f18639"
 dependencies = [
  "alloy-primitives",
- "alloy-serde",
+ "alloy-serde 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "serde",
 ]
 
@@ -128,8 +152,8 @@ name = "alloy-network"
 version = "0.1.0"
 source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b661f54df0ac213f18639"
 dependencies = [
- "alloy-consensus",
- "alloy-eips",
+ "alloy-consensus 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
+ "alloy-eips 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "alloy-json-rpc",
  "alloy-primitives",
  "alloy-rpc-types",
@@ -270,7 +294,7 @@ source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b
 dependencies = [
  "alloy-primitives",
  "alloy-rpc-types",
- "alloy-serde",
+ "alloy-serde 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "serde",
  "serde_json",
 ]
@@ -280,11 +304,11 @@ name = "alloy-rpc-types"
 version = "0.1.0"
 source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b661f54df0ac213f18639"
 dependencies = [
- "alloy-consensus",
- "alloy-eips",
+ "alloy-consensus 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
+ "alloy-eips 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "alloy-primitives",
  "alloy-rlp",
- "alloy-serde",
+ "alloy-serde 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "itertools 0.12.1",
  "serde",
  "serde_json",
@@ -295,6 +319,16 @@ dependencies = [
 name = "alloy-serde"
 version = "0.1.0"
 source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b661f54df0ac213f18639"
+dependencies = [
+ "alloy-primitives",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "alloy-serde"
+version = "0.1.0"
+source = "git+https://github.com/alloy-rs/alloy#8f05300c3d5fb0b27e2a4a9ae74f4adf81beedd8"
 dependencies = [
  "alloy-primitives",
  "serde",
@@ -319,7 +353,7 @@ name = "alloy-signer-wallet"
 version = "0.1.0"
 source = "git+https://github.com/alloy-rs/alloy?rev=7e39c85#7e39c85f9f51e6449a8b661f54df0ac213f18639"
 dependencies = [
- "alloy-consensus",
+ "alloy-consensus 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "alloy-network",
  "alloy-primitives",
  "alloy-signer",
@@ -1045,9 +1079,9 @@ name = "eip-4844-alloy"
 version = "0.1.0"
 dependencies = [
  "alloy-chains",
- "alloy-consensus",
+ "alloy-consensus 0.1.0 (git+https://github.com/alloy-rs/alloy)",
  "alloy-dyn-abi",
- "alloy-eips",
+ "alloy-eips 0.1.0 (git+https://github.com/alloy-rs/alloy?rev=7e39c85)",
  "alloy-genesis",
  "alloy-json-abi",
  "alloy-json-rpc",
