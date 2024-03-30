@@ -1,8 +1,8 @@
 //! Example of using the HTTP provider to get the latest block number.
 
 use alloy_consensus::{
-    ReceiptWithBloom, SidecarBuilder, TxEip1559, TxEip2930, TxEip4844, TxEip4844Variant,
-    TxEip4844WithSidecar, TxLegacy,
+    ReceiptWithBloom, SidecarBuilder, TxEip1559, TxEip2930, TxEip4844,
+    TxEip4844Variant, TxEip4844WithSidecar, TxLegacy,
 };
 use alloy_network::Ethereum;
 use alloy_node_bindings::Anvil;
@@ -11,8 +11,8 @@ use alloy_provider::{HttpProvider, Provider};
 use alloy_rlp::{Decodable, Encodable};
 use alloy_rpc_client::RpcClient;
 use alloy_rpc_types::{
-    request::TransactionRequest, AccessList, Signature as RpcSignature,
-    Transaction as RpcTransaction, TransactionInput,
+    request::TransactionRequest, AccessList, BlobTransactionSidecar,
+    Signature as RpcSignature, Transaction as RpcTransaction, TransactionInput,
 };
 use alloy_signer_wallet::LocalWallet;
 use eyre::Result;
@@ -65,12 +65,9 @@ async fn send_blob_txns() -> Result<()> {
     // ingest block data
     builder.ingest(b"dummy blob");
     // build the sidecar with default KZG settings after all ingestion is finished
-    let sidecar: alloy_consensus::BlobTransactionSidecar = builder.build()?;
-    let right_sidecar = alloy_rpc_types::BlobTransactionSidecar::new(
-        blobs = sidecar.blobs,
-        sidecar.commitments,
-        sidecar.proofs,
-    );
+    let sidecar = builder.build()?;
+    let right_sidecar =
+        BlobTransactionSidecar::new(sidecar.blobs, sidecar.commitments, sidecar.proofs);
     // Create a transaction to transfer 1 wei from Alice to Bob.
     // let data = BlobReader::readBlobCall::new(()).abi_encode();
     // let current_dir = std::env::current_dir()?;
